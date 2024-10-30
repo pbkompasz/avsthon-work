@@ -15,6 +15,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { ReactNode, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Stack from "@mui/material/Stack";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
@@ -28,6 +29,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <List>
         {[
           { name: "Home", href: "/" },
+          { name: "Marketplace", href: "marketplace" },
           { name: "Contracts", href: "contracts" },
         ].map((item, index) => (
           <ListItem key={item.href} disablePadding>
@@ -60,20 +62,23 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <Box sx={{ flexGrow: 1, width: "100vw", height: "100vh" }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer(true)}
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            style={{ width: "100%" }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-          <ConnectButton />
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={toggleDrawer(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <ConnectButton />
+          </Stack>
         </Toolbar>
       </AppBar>
       <Drawer open={open} onClose={toggleDrawer(false)}>

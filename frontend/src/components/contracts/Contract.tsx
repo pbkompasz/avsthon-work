@@ -11,15 +11,7 @@ import Paper from "@mui/material/Paper";
 import "./Contract.css";
 import ContractEdit from "./ContractEdit";
 import ContractCreate from "./ContractCreate";
-
-type Contract = {
-  id: string;
-  name: string;
-  status: "created" | "negotiation" | "dispute" | "completed";
-  numberOfParticipants: number;
-  requireCompetence?: boolean;
-  category?: string;
-};
+import type { Contract } from "../../contract";
 
 const ContractStatus = ({ status }: { status: string }) => {
   let color = "#0390fc";
