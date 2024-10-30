@@ -1,6 +1,6 @@
 # avsthon-work
 
-This repo containts the submission to the 2024 AVSthon's main track.
+Submitted to the 2024 AVSthon's main track.
 
 ## Motivation
 
@@ -28,27 +28,44 @@ Being an open system anyone can build on top of it, for example due to LLMs a lo
 reputation protocol on top the marketplace.
 
 Our system is open and opt-in by default. Given this, the frontend can be self-hosted. To join the system you only need to register as an operator.
+Each contract defines their own level of risk e.g. independent dispute resolution, secured payments, etc.
+
+## Architecture
+
+![architecture](./img/architecture.png)
+
+A bottom up description:
+
+1.  Front-end applications
+    - Task generator
+    - 
+2.  Operator
+    - the operator can handle escrow payments and thus earning interest for the employer via restaking
+    - following an on-chain signature verification the contract data can be aggregated into a marketplace
+    - operators can handle dispute resolutions and earn some of the restaked funds
+3. AVS
+    - Escrow payments restaked
 
 ## Technical Details
 
 ### Cryptography
 
-Through BBS+ and JSON-LD we can create a ...
-
-### Smart Contract Architecture
-
-There are two main smart contract groups:
-
-- ..., these are necessary to generate a new entry and to keep contract information, etc.
-- ..., which is responsible for aggregation and creating an interface for a marketplace.
-
-Each new contract has to be created with a message that is signed by every participant.
+The ideal cyrptographic scheme would be BBS+ and JSON-LD through which we can create proofs that are easier to build a marketplace around.
+In a employer-employee contract each party has ownership of their information e.g. e.g. name, address, etc. and co-ownership of the contract's
+data e.g. price, milestones, etc.
+The marketplace aggregator can only include information that was signed and shared with by the respective owner. In case of co-ownership both
+parties have to agree to it.
+Each party can individually create circuits of co-owned data e.g. they can prove that the contract's price falls in a certain range.
 
 ### Economics
 
 The parties optionally can keep their token e.g. Ether, any ERC20, LSTs, etc. and earn money by securing the AVS.
-Or they can send money to the governing DAO to improve the whole ecosystem.
+The escrow payments are kept in the AVS in the time between start of a contract and the conclusion of the contract.
+This sum and the rewards earned on it secures the whole ecosystem.
+Through stake delegation, slashing and a reputation system we can set up a dispute resolution system.
 
-## Run locally
+## Deployments
+
+Holesky testnet:
 
 ## Resources
