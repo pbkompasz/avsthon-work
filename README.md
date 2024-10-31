@@ -4,28 +4,20 @@ Submitted to the 2024 AVSthon's main track.
 
 ## Motivation
 
-Current state of peer to peer platforms are exploative to the workers. Usually these platforms overuse their platform and exploit their users
+Current state of peer to peer platforms are exploative to the workers. Usually these platforms abuse their platform and exploit their users
 by hidden fees, infavourable work environment, etc. and the users become locked in these platforms. For example an Uber driver cannot
 leave and start a private taxi company without taking a big pay-cut. There is no way for them to showcase their previous experience since
 these data points belong to the app.
-Furthermore bounty programs are becoming more and more mainstream, however these platforms lack clarity and there is a lot of risk for the bounty participants.
-With the help of cryptography and smart contracts we can create a system that works for a case by case basis and can take advantage of the network effect. Our solution can be separated into two parts:
+Furthermore bounty programs are becoming more and more mainstream, however these platforms lack clarity and there is a lot of risk for the bounty participants e.g. no payout after successful submission.
 
-- a set of tools through which individuals can set up
-- an AVS that can collect the willing participants and create a marketplace. This sharing would happen through ZK proofs
-  This creates the right environment where the user would only share their data if they get something in return i.e. the platform and the users would only work together if it is beneficial for both of them.
-  Tools like ZKPass could help bring on users w/ as little friction as possible.
+With AVSs and open architectures we can create a system where escrow payments secure the whole ecosystem and a public reputation system can minimize losses due to malicious actors. For example if we restake assets for 4% interest and keep a pubilc record of each actor we can tune the risk level to keep it under the rewards.
 
 In short we aim to solve the following problems fo peer-to-peer job platforms:
 
-- dispute resolution, through pooled security
+- pooled security by restaked escrow payment
 - security of payments, through restaking and slashing
-- minimization of fraudalent activities,
-- free-market governance,
-
-Due to restaking, escrow payments become an attractive option for employers due to the interest they can earn on it.
-Being an open system anyone can build on top of it, for example due to LLMs a lot of closed platforms suffer from spam. Some user could build a
-reputation protocol on top the marketplace.
+- minimization of fraudalent activities
+- free-market governance
 
 Our system is open and opt-in by default. Given this, the frontend can be self-hosted. To join the system you only need to register as an operator.
 Each contract defines their own level of risk e.g. independent dispute resolution, secured payments, etc.
@@ -37,16 +29,21 @@ Each contract defines their own level of risk e.g. independent dispute resolutio
 A bottom up description:
 
 1.  Front-end applications
+    - Marketplace e.g. Upwork
+    - Self hosted by organization e.g. bounty program
+    - B2B e.g. Freelance-to-SMEs
     - Task generator
-    - 
 2.  Operator
     - the operator can handle escrow payments and thus earning interest for the employer via restaking
     - following an on-chain signature verification the contract data can be aggregated into a marketplace
     - operators can handle dispute resolutions and earn some of the restaked funds
-3. AVS
+3.  AVS (ServiceManager + TaskManager)
     - Escrow payments restaked
+    - For each contract participant a signature and proof is published. Each of these have to be validated and aggregated.
 
 ## Technical Details
+
+![contract](./img/contract.png)
 
 ### Cryptography
 
@@ -69,3 +66,8 @@ Through stake delegation, slashing and a reputation system we can set up a dispu
 Holesky testnet:
 
 ## Resources
+
+[Verifiable Credentials Flavors Explained](https://docs.google.com/document/d/1MqNTo7hIDBKZjLq7eZ7yaPsNFg6Ea3YahR8RR5RtSOM)  
+[A linked data proof suite for BBS+ signatures](https://github.com/mattrglobal/jsonld-signatures-bbs)  
+[EigenLayer Contracts](https://github.com/Layr-Labs/eigenlayer-contracts/tree/dev/docs#depositing-into-eigenlayer)  
+[AVS Book](https://eigenlabs.gitbook.io/avs-book)
