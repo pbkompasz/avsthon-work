@@ -4,23 +4,26 @@ Submitted to the 2024 AVSthon's main track.
 
 ## Motivation
 
-Current state of peer to peer platforms are exploative to the workers. Usually these platforms abuse their platform and exploit their users
-by hidden fees, infavourable work environment, etc. and the users become locked in these platforms. For example an Uber driver cannot
-leave and start a private taxi company without taking a big pay-cut. There is no way for them to showcase their previous experience since
-these data points belong to the app.
-Furthermore bounty programs are becoming more and more mainstream, however these platforms lack clarity and there is a lot of risk for the bounty participants e.g. no payout after successful submission.
+Current State of Peer-to-Peer Platforms
 
-With AVSs and open architectures we can create a system where escrow payments secure the whole ecosystem and a public reputation system can minimize losses due to malicious actors. For example if we restake assets for 4% interest and keep a pubilc record of each actor we can tune the risk level to keep it under the rewards.
+Today's peer-to-peer platforms often exploit workers. These platforms impose hidden fees and unfavorable conditions that trap users within the ecosystem. For instance, an Uber driver can't easily leave and start a private taxi service without a significant pay cut, as their experience data is locked within the platform.
 
-In short we aim to solve the following problems fo peer-to-peer job platforms:
+Bounty programs have also become mainstream, but they lack transparency, putting participants at risk, such as not receiving payouts despite completing tasks.
 
-- pooled security by restaked escrow payment
-- security of payments, through restaking and slashing
-- minimization of fraudalent activities
-- free-market governance
+### Our Solution: Transparent, Secure Peer-to-Peer System
 
-Our system is open and opt-in by default. Given this, the frontend can be self-hosted. To join the system you only need to register as an operator.
-Each contract defines their own level of risk e.g. independent dispute resolution, secured payments, etc.
+With Actively Validated Services (AVSs) and open architectures, we can create a fairer ecosystem. Our approach centers on escrow payments to secure transactions and a public reputation system to reduce losses from malicious actors. By restaking assets at a 4% interest rate and maintaining a public record of each participant, we can effectively manage risk to keep it below reward levels.
+
+### Our Objectives
+
+We aim to address key issues with peer-to-peer job platforms:
+
+- Pooled Security via restaked escrow payments
+- Payment Security through restaking and slashing mechanisms
+- Fraud Prevention with transparent reputation tracking
+- Free-Market Governance
+
+Our system is open and opt-in by default, and the frontend can be self-hosted. Users simply register as operators to join. Each contract defines its own risk level, offering options like independent dispute resolution and secured payments.
 
 ## Architecture
 
@@ -40,6 +43,10 @@ A bottom up description:
 3.  AVS (ServiceManager + TaskManager)
     - Escrow payments restaked
     - For each contract participant a signature and proof is published. Each of these have to be validated and aggregated.
+
+The off-chain node code is located in the `avs/aggregator` and `avs/operator` directories.  
+The `avs/contracts` directory contains the AVS contacts, the `ServiceManager` and `TaskManager`.  
+`frontend` directory contains a proof-of-concept freelancer platforms, where users can create contracts, update their state w/ signatures and make escrow payments.  
 
 ## Technical Details
 
