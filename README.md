@@ -72,6 +72,10 @@ Through stake delegation, slashing and a reputation system we can set up a dispu
 
 Holesky testnet:
 
+## Future plans
+
+Implement a
+
 ## Resources
 
 [Verifiable Credentials Flavors Explained](https://docs.google.com/document/d/1MqNTo7hIDBKZjLq7eZ7yaPsNFg6Ea3YahR8RR5RtSOM)  

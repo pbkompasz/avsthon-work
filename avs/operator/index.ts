@@ -2,6 +2,19 @@ import { ethers } from "ethers";
 import * as dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
+import loadBls, { type G1Element, type PrivateKey } from "bls-signatures";
+
+const BLS = loadBls();
+// TODO
+const seed = Uint8Array.from([
+  0, 50, 6, 244, 24, 199, 1, 25, 52, 88, 192, 19, 18, 12, 89, 6, 220, 18, 102,
+  58, 209, 82, 12, 62, 89, 110, 182, 9, 44, 20, 254, 22,
+]);
+let sk: PrivateKey, pk: G1Element;
+BLS.then((bls) => {
+  sk = bls.AugSchemeMPL.key_gen(seed);
+  pk = sk.get_g1();
+});
 
 dotenv.config();
 
@@ -44,8 +57,7 @@ const coreDeploymentData = JSON.parse(
 
 const delegationManagerAddress = coreDeploymentData.addresses.delegation; // todo: reminder to fix the naming of this contract in the deployment file, change to delegationManager
 const avsDirectoryAddress = coreDeploymentData.addresses.avsDirectory;
-const serviceManagerAddress =
-  avsDeploymentData.addresses.serviceManager;
+const serviceManagerAddress = avsDeploymentData.addresses.serviceManager;
 const ecdsaStakeRegistryAddress = avsDeploymentData.addresses.stakeRegistry;
 
 // Load ABIs
@@ -93,38 +105,29 @@ const avsDirectory = new ethers.Contract(
   wallet
 );
 
-const signAndRespondToTask = async (
-  taskIndex: number,
-  task: Task
-) => {
+const signAndRespondToTask = async (taskIndex: number, task: Task) => {
+  const bls = await BLS;
+
+  if (!sk) throw new Error("No secret key");
+
   // Verify signature
+  const message = Uint8Array.from([1, 2, 3, 4, 5]);
+  const signature = bls.AugSchemeMPL.sign(sk, message);
+
+  let ok = bls.AugSchemeMPL.verify(pk, message, signature);
 
   // Store in database
 
   // TODO Check if no data is leaked
 
-  const taskHash = ethers.solidityPackedKeccak256(["string"], [task]);
-  const messageBytes = ethers.getBytes(taskHash);
-  const signature = await wallet.signMessage(messageBytes);
-
   console.log(`Signing and responding to task ${taskIndex}`);
 
+  // TODO Get all operators
   const operators = [await wallet.getAddress()];
   const signatures = [signature];
-  const signedTask = ethers.AbiCoder.defaultAbiCoder().encode(
-    ["address[]", "bytes[]", "uint32"],
-    [
-      operators,
-      signatures,
-      ethers.toBigInt((await provider.getBlockNumber()) - 1),
-    ]
-  );
+  const signedTask = {};
 
-  const tx = await serviceManager.respondToTask(
-    task,
-    taskIndex,
-    signedTask
-  );
+  const tx = await serviceManager.respondToTask(task, taskIndex, signedTask);
   await tx.wait();
   console.log(`Responded to task.`);
 };
@@ -192,13 +195,10 @@ const monitorNewTasks = async () => {
   //console.log(`Creating new task "EigenWorld"`);
   //await helloWorldServiceManager.createNewTask("EigenWorld");
 
-  serviceManager.on(
-    "NewTaskCreated",
-    async (taskIndex: number, task: Task) => {
-      console.log(`New task detected: Hello, ${task.id}`);
-      await signAndRespondToTask(taskIndex, task);
-    }
-  );
+  serviceManager.on("NewTaskCreated", async (taskIndex: number, task: Task) => {
+    console.log(`New task detected: Hello, ${task.id}`);
+    await signAndRespondToTask(taskIndex, task);
+  });
 
   console.log("Monitoring for new tasks...");
 };
